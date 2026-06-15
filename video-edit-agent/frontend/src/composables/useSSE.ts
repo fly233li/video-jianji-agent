@@ -76,7 +76,8 @@ export function useSSE() {
     // 等待连接建立（最多 5 秒）
     for (let i = 0; i < 25; i++) {
       await new Promise(r => setTimeout(r, 200))
-      if (eventSource?.readyState === EventSource.OPEN) {
+      // connect() always resets eventSource before returning, but TS can't track this across function boundaries
+      if ((eventSource as EventSource | null)?.readyState === EventSource.OPEN) {
         isConnected.value = true
         return true
       }
