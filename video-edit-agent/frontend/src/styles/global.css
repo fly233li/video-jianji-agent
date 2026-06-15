@@ -1,0 +1,522 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #e8edf2 0%, #dde3ea 50%, #e3e9ef 100%);
+}
+
+/* ─── App Layout ─────────────────────────────── */
+
+.app-layout {
+  height: 100vh;
+  display: flex;
+}
+
+/* ─── Sidebar — Liquid Glass ─────────────────── */
+
+.app-sidebar {
+  width: 200px;
+  color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: relative;
+  background: rgba(238, 243, 247, 0.55);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.04);
+}
+
+.app-sidebar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(200, 215, 230, 0.08) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure sidebar children are above the glass layer */
+.app-sidebar > * {
+  position: relative;
+  z-index: 1;
+}
+
+.app-sidebar .logo {
+  padding: 20px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.5px;
+}
+
+.app-sidebar .el-menu {
+  border-right: none;
+  flex: 1;
+  background: transparent !important;
+}
+
+/* Sidebar menu items — liquid glass hover/active */
+.app-sidebar .el-menu-item {
+  background: transparent !important;
+  margin: 2px 8px;
+  width: auto !important;
+  border-radius: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  letter-spacing: 0.3px;
+}
+
+.app-sidebar .el-menu-item:hover {
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px);
+}
+
+.app-sidebar .el-menu-item.is-active {
+  background: rgba(255, 255, 255, 0.7) !important;
+  box-shadow:
+    0 2px 8px rgba(64, 158, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.app-sidebar .status-bar {
+  padding: 8px 16px;
+  font-size: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.app-sidebar .status-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #4a5a6a;
+}
+
+.app-sidebar .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.app-sidebar .status-dot.online { background-color: #67c23a; }
+.app-sidebar .status-dot.warning { background-color: #e6a23c; }
+.app-sidebar .status-dot.offline { background-color: #f56c6c; }
+
+.app-sidebar .latency-text {
+  color: #6a7a8a;
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+}
+
+/* ─── Main Content — Liquid Glass ────────────── */
+
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  position: relative;
+}
+
+/* Glass card for content panels */
+.app-main::before {
+  content: '';
+  position: fixed;
+  top: 34px;
+  left: 200px;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(255, 255, 255, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(200, 220, 240, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure content is above the glass layer */
+.app-main > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Glass Cards ────────────────────────────── */
+
+.el-card,
+.glass-card {
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  border-radius: 14px !important;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.el-card:hover,
+.glass-card:hover {
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+/* ─── Page Header ────────────────────────────── */
+
+.page-header {
+  margin-bottom: 20px;
+}
+
+.page-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #303133;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.page-header p {
+  font-size: 14px;
+  color: #909399;
+  letter-spacing: 0.3px;
+}
+
+/* ─── Liquid Glass Buttons ───────────────────── */
+
+/* Base glass button style */
+.el-button {
+  border-radius: 12px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.el-button:hover {
+  transform: translateY(-1px);
+}
+
+.el-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Shine overlay on hover — inspired by liquid-glass border shine */
+.el-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.el-button:hover::after {
+  opacity: 1;
+}
+
+/* ── Default button ──────────────────────────── */
+
+.el-button--default {
+  background: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(12px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.7) !important;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+.el-button--default:hover {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+.el-button--default:active {
+  background: rgba(255, 255, 255, 0.55) !important;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+/* ── Primary button ──────────────────────────── */
+
+.el-button--primary {
+  background: linear-gradient(135deg, rgba(64, 158, 255, 0.85), rgba(54, 140, 235, 0.9)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow:
+    0 4px 14px rgba(64, 158, 255, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+.el-button--primary:hover {
+  box-shadow:
+    0 8px 28px rgba(64, 158, 255, 0.35),
+    0 4px 12px rgba(64, 158, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+.el-button--primary:active {
+  box-shadow:
+    0 2px 8px rgba(64, 158, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  background: linear-gradient(135deg, rgba(54, 140, 235, 0.9), rgba(44, 125, 220, 0.95)) !important;
+}
+
+/* ── Success button ──────────────────────────── */
+
+.el-button--success {
+  background: linear-gradient(135deg, rgba(103, 194, 58, 0.85), rgba(90, 175, 50, 0.9)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow:
+    0 4px 14px rgba(103, 194, 58, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+.el-button--success:hover {
+  box-shadow:
+    0 8px 28px rgba(103, 194, 58, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+/* ── Danger button ───────────────────────────── */
+
+.el-button--danger {
+  background: linear-gradient(135deg, rgba(245, 108, 108, 0.85), rgba(230, 90, 90, 0.9)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow:
+    0 4px 14px rgba(245, 108, 108, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+.el-button--danger:hover {
+  box-shadow:
+    0 8px 28px rgba(245, 108, 108, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+/* ── Warning button ──────────────────────────── */
+
+.el-button--warning {
+  background: linear-gradient(135deg, rgba(230, 162, 60, 0.85), rgba(215, 145, 50, 0.9)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow:
+    0 4px 14px rgba(230, 162, 60, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+.el-button--warning:hover {
+  box-shadow:
+    0 8px 28px rgba(230, 162, 60, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+/* ── Info button ─────────────────────────────── */
+
+.el-button--info {
+  background: linear-gradient(135deg, rgba(144, 147, 153, 0.5), rgba(130, 133, 140, 0.55)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+
+.el-button--info:hover {
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* ── Text button ─────────────────────────────── */
+
+.el-button--text {
+  border-radius: 8px !important;
+  padding: 4px 10px !important;
+}
+
+.el-button--text:hover {
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* ── Size variants ───────────────────────────── */
+
+.el-button--large { border-radius: 14px !important; }
+.el-button--small { border-radius: 9px !important; }
+
+/* ── Form inputs — liquid glass ──────────────── */
+
+.el-input__wrapper,
+.el-textarea__inner,
+.el-select .el-input__wrapper,
+.el-autocomplete .el-input__wrapper {
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(8px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(160%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  border-radius: 10px !important;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.el-input__wrapper:hover,
+.el-textarea__inner:hover {
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+.el-input__wrapper.is-focus,
+.el-textarea__inner:focus {
+  box-shadow:
+    0 4px 20px rgba(64, 158, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(64, 158, 255, 0.4) !important;
+}
+
+/* ── Select dropdown — glass ─────────────────── */
+
+.el-popper {
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ── Dialog / modal ──────────────────────────── */
+
+.el-overlay-dialog {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.el-dialog {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ── Table ───────────────────────────────────── */
+
+.el-table {
+  background: rgba(255, 255, 255, 0.35) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.el-table th.el-table__cell {
+  background: rgba(255, 255, 255, 0.4) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ── Tabs ────────────────────────────────────── */
+
+.el-tabs__header {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 4px 6px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.el-tabs__nav-wrap::after {
+  display: none !important;
+}
+
+.el-tabs__item {
+  border-radius: 8px !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.el-tabs__item:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.el-tabs__item.is-active {
+  background: rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* ── Tree ────────────────────────────────────── */
+
+.folder-tree .el-tree-node__content {
+  height: 36px;
+  border-radius: 6px;
+  margin: 1px 4px;
+  transition: background 0.2s ease;
+}
+
+.folder-tree .el-tree-node__content:hover {
+  background: rgba(255, 255, 255, 0.4) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* ── Progress Panel ──────────────────────────── */
+
+.progress-panel .log-timeline {
+  max-height: 300px;
+  overflow-y: auto;
+  background: rgba(29, 30, 31, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #c9d1d9;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.progress-panel .log-timeline .log-entry {
+  white-space: nowrap;
+}
+
+.progress-panel .log-timeline .log-entry.error { color: #f56c6c; }
+.progress-panel .log-timeline .log-entry.success { color: #67c23a; }

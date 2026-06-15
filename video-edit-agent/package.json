@@ -1,0 +1,56 @@
+{
+  "name": "video-edit-agent",
+  "version": "2.0.0",
+  "description": "小飞龙批量剪辑 — 钢制家具淘宝短视频批量剪辑助手",
+  "main": "electron/main.js",
+  "scripts": {
+    "electron:dev": "electron .",
+    "electron:build": "CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder",
+    "electron:start": "electron ."
+  },
+  "build": {
+    "appId": "com.xiaofeilong.videoedit",
+    "productName": "视频剪辑助手",
+    "directories": {
+      "output": "dist_electron"
+    },
+    "files": [
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "dist/视频剪辑助手",
+        "to": "视频剪辑助手",
+        "filter": ["**/*"]
+      }
+    ],
+    "win": {
+      "icon": "logo.ico",
+      "signAndEditExecutable": false,
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "视频剪辑助手",
+      "installerIcon": "logo.ico",
+      "uninstallerIcon": "logo.ico",
+      "installerHeaderIcon": "logo.ico",
+      "language": "2052",
+      "unicode": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^36.0.0",
+    "electron-builder": "^26.0.0"
+  }
+}

@@ -1,0 +1,67 @@
+# ============ Python ============
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+*.whl
+
+# ============ Node ============
+node_modules/
+frontend/node_modules/
+frontend/dist/
+*.js.map
+
+# ============ 构建产物 ============
+dist_electron/
+video-edit-agent/dist/
+video-edit-agent/dist_electron/
+video-edit-agent/build/
+video-edit-agent/packaging/build/
+video-edit-agent/packaging/dist/
+
+# ============ 临时文件 ============
+temp/
+*.tmp
+*.temp
+
+# ============ 外部依赖源码 ============
+liquid-glass-react-master/
+liquid-glass-react-master.zip
+
+# ============ IDE / 编辑器 ============
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ============ 系统 ============
+.DS_Store
+Thumbs.db
+
+# ============ Claude ============
+.claude/
+
+# ============ 大文件 & 素材 ============
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.mp3
+*.wav
+*.png
+*.jpg
+*.jpeg
+*.ico
+
+# ============ 截图 & 文档图片 ============
+screenshot*.png
+ScreenShot*.jpg
+test*.png
+
+# ============ 其他 ============
+*.log
+*.hash
