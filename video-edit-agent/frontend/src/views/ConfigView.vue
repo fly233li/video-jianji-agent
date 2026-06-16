@@ -227,6 +227,52 @@
         </div>
       </el-card>
 
+      <!-- 剪映草稿设置 -->
+      <el-card shadow="never" class="mb-6">
+        <template #header>
+          <div class="flex items-center gap-2">
+            <el-icon :size="18" color="#9b59b6"><VideoPlay /></el-icon>
+            <span class="font-medium">剪映草稿</span>
+          </div>
+        </template>
+        <el-row :gutter="24">
+          <el-col :span="8">
+            <el-form-item label="叠化转场">
+              <div class="flex items-center gap-3">
+                <el-switch v-model="form.DRAFT_TRANSITION_ENABLED" size="small" />
+                <span class="text-xs text-muted">在各段落间添加叠化过渡</span>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="调色滤镜">
+              <div class="flex items-center gap-3">
+                <el-switch v-model="form.DRAFT_COLOR_GRADING_ENABLED" size="small" />
+                <span class="text-xs text-muted">对每个视频段应用调色</span>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" v-if="form.DRAFT_COLOR_GRADING_ENABLED">
+            <el-form-item label="滤镜风格">
+              <el-select v-model="form.DRAFT_COLOR_GRADING_FILTER" style="width: 100%">
+                <el-option label="清新" value="清新" />
+                <el-option label="自然" value="自然" />
+                <el-option label="暖食" value="暖食" />
+                <el-option label="日系奶油" value="日系奶油" />
+                <el-option label="小清新" value="小清新" />
+                <el-option label="通透" value="通透" />
+                <el-option label="清晰明亮" value="清晰明亮" />
+                <el-option label="清透自然" value="清透自然" />
+                <el-option label="暖晨" value="暖晨" />
+                <el-option label="明亮焕晴" value="明亮焕晴" />
+                <el-option label="奶油美食" value="奶油美食" />
+                <el-option label="清新暖食" value="清新暖食" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-card>
+
       <!-- 其他 -->
       <el-card shadow="never">
         <template #header>
@@ -263,7 +309,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { getConfig, updateConfig, selectFile } from '../composables/useApi'
 import { ElMessage } from 'element-plus'
-import { Setting, Headset, VideoCamera, VideoCameraFilled, MagicStick, Document, MoreFilled } from '@element-plus/icons-vue'
+import { Setting, Headset, VideoCamera, VideoCameraFilled, MagicStick, Document, MoreFilled, VideoPlay } from '@element-plus/icons-vue'
 import PageHeader from '../components/PageHeader.vue'
 
 const loading = ref(true)
@@ -296,6 +342,9 @@ const form = reactive<Record<string, any>>({
   TRANSITION_DURATION: 0.3,
   LUT_ENABLED: false,
   LUT_FILE: '',
+  DRAFT_TRANSITION_ENABLED: true,
+  DRAFT_COLOR_GRADING_ENABLED: true,
+  DRAFT_COLOR_GRADING_FILTER: '清新',
 })
 
 const bgmPercent = computed({

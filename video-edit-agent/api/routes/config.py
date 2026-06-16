@@ -63,6 +63,11 @@ DEFAULT_CONFIG = {
     # LUT 调色
     "LUT_ENABLED": False,
     "LUT_FILE": "",
+    # 剪映草稿：叠化转场
+    "DRAFT_TRANSITION_ENABLED": True,
+    # 剪映草稿：调色滤镜
+    "DRAFT_COLOR_GRADING_ENABLED": True,
+    "DRAFT_COLOR_GRADING_FILTER": "清新",
     # 临时目录
     "TEMP_DIR": "temp",
 }

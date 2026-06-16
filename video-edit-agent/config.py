@@ -56,6 +56,17 @@ LUT_FILE = ""
 # ========== 视频过渡 ==========
 TRANSITION_DURATION = 0.3
 
+# ========== 剪映草稿：叠化转场 ==========
+# 启用后在草稿各视频段落间添加叠化（cross-dissolve）转场
+DRAFT_TRANSITION_ENABLED = True
+
+# ========== 剪映草稿：调色滤镜 ==========
+# 启用后对草稿中每个视频段落应用指定的调色滤镜
+DRAFT_COLOR_GRADING_ENABLED = True
+# 滤镜名称，对应 pyJianYingDraft.metadata.filter_meta.FilterType 枚举名
+# 常用选项：清新、自然、暖食、日系奶油、小清新、通透、清晰明亮、清透自然
+DRAFT_COLOR_GRADING_FILTER = "清新"
+
 # ========== 临时目录 ==========
 TEMP_DIR = "temp"
 

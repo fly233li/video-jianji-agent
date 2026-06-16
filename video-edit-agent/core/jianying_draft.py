@@ -18,6 +18,8 @@ from pyJianYingDraft import (
     TextStyle,
     ClipSettings,
 )
+from pyJianYingDraft.metadata.transition_meta import TransitionType
+from pyJianYingDraft.metadata.filter_meta import FilterType
 
 import config
 from core.subtitle_gen import generate_srt
@@ -65,14 +67,18 @@ def generate_draft(
     # ── 2. 视频轨道 ──────────────────────────────────────────────────
     script.add_track(TrackType.video, "视频素材")
 
-    for sec_name, video_path, duration, kb, extra_tpad, orig_duration in sec_data:
+    # 预过滤有效段落（跳过无视频或时长为零的项）
+    valid_items = []
+    for item in sec_data:
+        sec_name, video_path, duration, *_ = item
         if video_path is None or duration <= 0:
             continue
-
-        # 找到该段落在 TTS 中的起始时间（微秒）
         st = section_times_sec.get(sec_name)
         if st is None:
             continue
+        valid_items.append((sec_name, video_path, duration, st))
+
+    for i, (sec_name, video_path, duration, st) in enumerate(valid_items):
         sec_start_us = int(st[0] * SEC)
         target_dur_us = int(st[1] * SEC) - sec_start_us
         if target_dur_us <= 0:
@@ -83,6 +89,19 @@ def generate_draft(
             Timerange(sec_start_us, target_dur_us),
             speed=1.0,
         )
+
+        # 叠化转场（除最后一段外，每段末尾添加叠化）
+        if config.DRAFT_TRANSITION_ENABLED and i < len(valid_items) - 1:
+            segment.add_transition(TransitionType.叠化)
+
+        # 调色滤镜
+        if config.DRAFT_COLOR_GRADING_ENABLED:
+            try:
+                filter_type = getattr(FilterType, config.DRAFT_COLOR_GRADING_FILTER)
+                segment.add_filter(filter_type)
+            except AttributeError:
+                pass  # 滤镜名称无效时静默跳过
+
         script.add_segment(segment, "视频素材")
 
     # ── 3. 音频轨道（TTS 配音） ─────────────────────────────────────
